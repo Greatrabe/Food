@@ -1,9 +1,0 @@
-Vegetarian, vegetarian, vegan
-Beef, beef, veal
-Chicken, chicken, hen
-Pasta, pasta, penne, alfredo, lasagna, noodle, ziti
-Mexican, mexican, taco, fajita, jalapeno, quesadilla, queso, guacamole
-Asian, korean, asian, chinese, japanese, vietnamese, shanghai, beijing, singapore, thai
-Indian, indian, butter chicken, curry, naan
-Cheese, cheese, queso, pizza
-Seafood, seafood, fish, salmon, shrimp
