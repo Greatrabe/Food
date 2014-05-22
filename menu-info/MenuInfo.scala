@@ -23,6 +23,9 @@ object MenuInfo {
 		printer.println(a)
 	}
 
+	/**
+	 * Produces a mapping between keywords and types of food
+	 */
 	def readMap: Map[String, String] = {
 		val sc = new Scanner(new File("food-types.txt"))
 		var m = Map[String, String]()
@@ -35,6 +38,9 @@ object MenuInfo {
 		m
 	}
 
+	/**
+	 * Produces the types of food for a given dish
+	 */
 	def classify(name: String): Seq[String] = {
 		val nm = name.toLowerCase
 		var ret = Seq[String]()
@@ -45,6 +51,11 @@ object MenuInfo {
 		ret
 	}
 
+	/**
+	 * Given a time of day (lunch/dinner), and day/location pair, and 
+	 * an XML node representing the corresponding data, prints the kinds of
+	 * food available into an easy to read file.
+	 */
 	def getProducts(time: String)(implicit data: (String, String), meal: NodeSeq) = {
 		val day = data._1
 		val loc = data._2
@@ -64,8 +75,10 @@ object MenuInfo {
 	}
 
 	def main(args: Array[String]): Unit = {
+		// request menu data from the server
 		val url = new URL(s"$uri?key=$key")
 		val xml = XML.load(url)
+
 		//val xml = XML.loadFile("info.xml")
 		val outlets = xml \ "data" \ "outlets"
 		
