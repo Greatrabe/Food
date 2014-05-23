@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    ifstream users("Userfile");
+    ifstream users("html/Userfile");
     string user, foodTypes[10], currentType, location, meal, day, menuLine, temp;
     int n, flag, foundFood, i;
 

@@ -5,7 +5,7 @@
 <body>
 
 <?php
-$file = fopen("data.txt","a");
+$file = fopen("Userfile","a");
 fwrite($file, $_GET['email']);
 fwrite($file, ',');
 fwrite($file, $_GET['Vegetarian']);
