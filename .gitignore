@@ -1,4 +1,5 @@
 *.class
+*.o
 output
 Userfile
 menu.txt
