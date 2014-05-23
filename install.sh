@@ -7,6 +7,7 @@ mesg() {
 }
 
 mesg "Copying files..."
+mkdir -p ~/public_html/Food
 cp -r . ~/public_html/Food
 
 mesg "Creating symlink..."
@@ -28,3 +29,4 @@ scala -cp menu-info MenuInfo
 
 mesg "Installing crontab..."
 crontab cron.txt
+
