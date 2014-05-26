@@ -1,0 +1,4 @@
+<Files program.cgi>
+  SSLRequireSSL
+  SetHandler cgi-script
+</Files>
