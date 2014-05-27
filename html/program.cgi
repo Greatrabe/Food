@@ -5,21 +5,23 @@ sys.stderr = sys.stdout
 
 form = cgi.FieldStorage() 
 
-#print "Content-Type: text/html"
-#print
-#print '<title>Foo</title>'
-#print '<body>'
-#print 'Hello World<br>'
 
 f = open('Userfile', 'a')
 
 l = ['email', 'Vegetarian', 'Beef', 'Chicken', 'Pasta', 'Mexican', 
   'Asian', 'Indian', 'Cheese', 'Seafood']
-l = map(lambda x: form.getvalue(x), l)
-l = map(lambda x: 'off' if x is None else x, l)
-f.write(reduce(lambda x, y: x + "," + y, l))
+s = reduce(lambda x, y: form.getvalue(x) + " " + y if x == 'email' else x + " " + y if form.getvalue(y) is not None else x, l)
+f.write(s + "\n")
 f.close()
 
-print '<script>'
-print '  window.location.href = "redirect.html"'
-print '</script>'
+print "Content-Type: text/html"
+print
+print '<title>Preferences Saved</title>'
+print '<body>'
+print 'Thank you for using Food. Your preferences have been saved and you will be emailed '
+print 'every Sunday with your own personal menu of the food available on campus that matches your preferences.<br>'
+print '</body>'
+
+#print '<script>'
+#print '  window.location.href = "redirect.html"'
+#print '</script>'

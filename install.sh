@@ -6,9 +6,11 @@ mesg() {
 	echo $@ 1>&2
 }
 
-mesg "Copying files..."
-mkdir -p ~/public_html/Food
-cp -r . ~/public_html/Food
+if [ ! -d ~/public_html/Food ]; then
+  mesg "Copying files..."
+  mkdir -p ~/public_html/Food
+  cp -r . ~/public_html/Food
+fi
 
 mesg "Creating symlink..."
 cd ~/public_html
