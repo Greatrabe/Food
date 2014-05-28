@@ -1,4 +1,9 @@
-<Files program.cgi>
+<Files write-preferences.cgi>
+  SSLRequireSSL
+  SetHandler cgi-script
+</Files>
+
+<Files signin.cgi>
   SSLRequireSSL
   SetHandler cgi-script
 </Files>
