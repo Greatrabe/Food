@@ -3,7 +3,7 @@
 START=`pwd`
 
 mesg() {
-	echo $@ 1>&2
+	echo "$@" 1>&2
 }
 
 if [ ! -d ~/public_html/Food ]; then
