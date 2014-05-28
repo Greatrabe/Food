@@ -1,8 +1,9 @@
 *.class
 *.o
-output
+output*
 Userfile
 menu.txt
 data.txt
 run
-.*~
+*~
+key.txt
