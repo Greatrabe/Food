@@ -1,18 +1,40 @@
 #!/usr/bin/env python
 import cgi, cgitb
-import sys
+import sys, os
 sys.stderr = sys.stdout
 
-form = cgi.FieldStorage() 
+with open('../food-types.txt', 'r') as f:
+  content = f.readlines()
+  l = []
+  for i in content:
+    parts = i.split(', ')
+    l.append(parts[0])
+  f.close()
+
+with open('Userfile', 'r') as f:
+  content = f.readlines()
+  f.close()
+
+email = os.environ['REMOTE_USER'] + "@uwaterloo.ca"
+form = cgi.FieldStorage()
 
 
-f = open('Userfile', 'a')
+s = reduce(lambda x, y: x + " " + y if form.getvalue(y) is not None else x, l, "")
+s = email + s + "\n"
+exists = False
 
-l = ['email', 'Vegetarian', 'Beef', 'Chicken', 'Pasta', 'Mexican', 
-  'Asian', 'Indian', 'Cheese', 'Seafood']
-s = reduce(lambda x, y: form.getvalue(x) + " " + y if x == 'email' else x + " " + y if form.getvalue(y) is not None else x, l)
-f.write(s + "\n")
-f.close()
+with open('Userfile', 'w') as f:
+  for line in content:
+    parts = line.split(" ")
+    if email == parts[0]:
+      exists = True
+      f.write(s)
+    else:
+      f.write(line)
+  if exists == False:
+    f.write(s)
+  f.close()
+
 
 print "Content-Type: text/html"
 print
@@ -21,7 +43,3 @@ print '<body>'
 print 'Thank you for using Food. Your preferences have been saved and you will be emailed '
 print 'every Sunday with your own personal menu of the food available on campus that matches your preferences.<br>'
 print '</body>'
-
-#print '<script>'
-#print '  window.location.href = "redirect.html"'
-#print '</script>'

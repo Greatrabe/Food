@@ -1,9 +1,17 @@
 <Files write-preferences.cgi>
+  Require valid-user
   SSLRequireSSL
   SetHandler cgi-script
 </Files>
 
 <Files signin.cgi>
+  Require valid-user
+  SSLRequireSSL
+  SetHandler cgi-script
+</Files>
+
+<Files unsubscribe.cgi>
+  Require valid-user
   SSLRequireSSL
   SetHandler cgi-script
 </Files>
