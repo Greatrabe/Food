@@ -4,4 +4,4 @@ TODO:
 - impove output format
 
 
-[ ] I love this project!
+- [ ] I love this project!
