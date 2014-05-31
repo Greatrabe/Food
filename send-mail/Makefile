@@ -1,5 +1,5 @@
 EXEC=run
-OBJ=send-menu.o
+OBJ=send-menu.o foodinfo.o
 
 .phony: clean
 

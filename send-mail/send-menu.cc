@@ -3,76 +3,85 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include "foodinfo.h"
 using namespace std;
+
+
 
 int main()
 {
     ifstream users("html/Userfile");
-    string user, foodTypes[10], currentType, location, meal, day, menuLine, temp;
+    string user, type, location, meal, day, description, menuLine, temp;
     int n, flag, foundFood, i;
     bool donewline = false;
 
+    //read in each food item from the data file
+	vector<food_info> Foods;
+    ifstream menu("menu.txt");
+    while (getline (menu, menuLine)) {
+
+        //read the data about the food item
+        int k = menuLine.find_first_of(' ')+1;
+        day = menuLine.substr(k);
+        getline(menu, menuLine);
+        k = menuLine.find_first_of(' ')+1;
+        location = menuLine.substr(k);
+        getline(menu, menuLine);
+        k = menuLine.find_first_of(' ')+1;
+        meal = menuLine.substr(k);
+        getline(menu, menuLine);
+        k = menuLine.find_first_of(' ')+1;
+        type = menuLine.substr(k);
+        getline(menu, menuLine);
+        k = menuLine.find_first_of(' ')+1;
+        description = menuLine.substr(k);
+
+        Foods.push_back(food_info(type, location, meal, day, description));
+    }
+
+    sort(Foods.begin(), Foods.end());
+
     while(getline(users,user))
     {
-        ifstream menu("menu.txt");
         ofstream output("output");
         stringstream buffer(user), call;
+        string buf;
         n = 0;
         foundFood = 0;
         buffer >> user;
         call << "mutt -s \"Waterloo Food\" " << user << " < output";
-        while (buffer >> foodTypes[n])
-        {
-            n++;
+        map <string, int> preferences;
+        while (buffer >> buf) {
+            preferences[buf] = 1;
         }
-        
-        while(getline(menu, menuLine))
-        {
-            stringstream buffer2(menuLine);
-            buffer2 >> temp;
-            if (temp == "DAY")
-            {
-                buffer2 >> day;
+        string curday;
+        string curloc;
+        //go through each food type and see if the user likes it
+        for (vector<food_info>::iterator it = Foods.begin();
+                        it != Foods.end(); it ++) {
+            //This user does not like this food
+            if (preferences.find(it->getType()) == preferences.end()) {
+                continue;
             }
-            else if (temp == "LOCATION")
-            {
-                string loc = location;
-                getline(buffer2, location);
-                location.erase(0,1);
-                if (location != loc) {
-                    donewline = true;
-                } 
+            //New Day
+            if (it->getDay() != curday) {
+                curday = it->getDay();
+                output << curday << ":" << endl;
+                curloc = "";
             }
-            else if (temp == "MEAL")
-            {
-                buffer2 >> meal;
+            //New Location
+            if (it->getLocation() != curloc) {
+                curloc = it->getLocation();
+                output << "  At " << curloc << ":" << endl;
             }
-            else if (temp == "TYPE")
-            {
-                flag = 0;
-                while (buffer2 >> currentType)
-                {
-                    for(i = 0; i < n; i++)
-                    {
-                        if (currentType == foodTypes[i])
-                        {
-                            flag = 1;
-                            foundFood = 1;
-                            break;
-                        }
-                    }
-                }
+            //Output the time and food description
+            output << "    " << it->getMeal() << ": " << it->getDescription() << endl;
+            foundFood ++;
+        }
 
-                if (flag)
-                {
-                    if (donewline) output << endl;
-                    getline(menu, menuLine);
-                    output << "You can go to " << location << " for " << meal << " on " << day << " to have " << menuLine << endl;
-                    donewline = false;
-                }
-            }
-        }
-        
         if (foundFood != 0)
         {
             system(call.str().c_str());
