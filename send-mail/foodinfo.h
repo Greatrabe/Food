@@ -2,22 +2,20 @@
 #define FOODINFO_H
 #include <string>
 
-using std::string;
-
 class food_info {
 	private:
-	string Type;
-	string Location;
-	string Meal;
-	string Day;
-	string Description;
+	std::string Type;
+	std::string Location;
+	std::string Meal;
+	std::string Day;
+	std::string Description;
 	public:
-	food_info(string, string, string, string, string);
-	string getType();
-	string getLocation();
-	string getMeal();
-	string getDay();
-	string getDescription();
+	food_info(std::string, std::string, std::string, std::string, std::string);
+	std::string getType();
+	std::string getLocation();
+	std::string getMeal();
+	std::string getDay();
+	std::string getDescription();
 };
 // we want to sort by Day -- monday < tuesday < ..
 // then by location --
