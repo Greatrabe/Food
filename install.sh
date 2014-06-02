@@ -23,11 +23,11 @@ chmod 700 run
 
 mesg "Compiling MenuInfo..."
 cd ../menu-info
-fsc MenuInfo.scala
+~cs444/bin/fsc MenuInfo.scala
 
 cd ..
 mesg "Getting current menu..."
-scala -cp menu-info MenuInfo
+~cs444/bin/scala -cp menu-info MenuInfo
 
 mesg "Installing crontab..."
 crontab cron.txt
