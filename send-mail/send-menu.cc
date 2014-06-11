@@ -24,6 +24,7 @@ int main()
     while (getline (menu, menuLine)) {
 
         //read the data about the food item
+        //throw away the types
         int k = menuLine.find_first_of(' ')+1;
         day = menuLine.substr(k);
         getline(menu, menuLine);
@@ -36,8 +37,9 @@ int main()
         k = menuLine.find_first_of(' ')+1;
         type = menuLine.substr(k);
         getline(menu, menuLine);
-        k = menuLine.find_first_of(' ')+1;
-        description = menuLine.substr(k);
+        //No type, keep the entire line
+//        k = menuLine.find_first_of(' ')+1;
+        description = menuLine;//.substr(k);
 
         Foods.push_back(food_info(type, location, meal, day, description));
     }
