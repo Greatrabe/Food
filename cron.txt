@@ -1,1 +1,0 @@
-0 0 * * 0 cd ~/public_html/Food && scala -cp ~/public_html/Food/menu-info MenuInfo && ./send-mail/run

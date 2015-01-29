@@ -1,31 +1,13 @@
 #!/bin/bash
 
-START=`pwd`
+source common.sh
 
-mesg() {
-  echo "$@" 1>&2
-}
-
-checkInstalled() {
-  while [ $# -gt 0 ]; do
-    if ! which "$1"; then
-      mesg "Installation requires $1. Please install $1 then retry."
-      exit 1
-    fi
-    shift
-  done
-}
-
-checkInstalled scala fsc make g++ crontab
-
-if [ -d ~/public_html/Food ]; then
-  mesg "Food already installed. Uninstalling..."
-  ./uninstall.sh
-  RVAL=$?
-  if [ "$RVAL" -ne 0 ]; then
-    mesg "Uninstall failed."
-    exit 1
-  fi
+mesg "Uninstalling previously installed copy of Food..."
+./uninstall.sh
+RVAL=$?
+if [ "$RVAL" -ne 0 ]; then
+  mesg "Uninstall failed."
+  exit 1
 fi
 
 mesg "Copying files..."
@@ -50,11 +32,28 @@ mesg "Getting current menu..."
 scala -cp menu-info MenuInfo
 
 mesg "Installing crontab..."
-crontab cron.txt
+CRON="0 0 * * 0 cd ~/public_html/Food && `which scala` -cp ~/public_html/Food/menu-info MenuInfo && ./send-mail/run ${COMMENT}"
+if [ -e ${CRON_FILE} ]; then
+  if grep "${COMMENT}" $CRON_FILE 1>/dev/null; then
+    mesg "Updating cron to reflect new command..."
+    sed -i "s@^*${COMMENT}\$@${CRON}@" ${CRON_FILE}
+  else # did not find the correct line in the cron file - never been installed
+    mesg "Adding new command to cron..."
+    echo "$CRON" >> ${CRON_FILE}
+  fi
+else
+  # there is no cron file, make it
+  mesg "Creating cron..."
+  echo "$CRON" >> ${CRON_FILE}
+fi
+crontab ${CRON_FILE}
 
 if [ -e ${START}/Userfile ]; then
   mesg "Installing Userfile..."
   cp ${START}/Userfile html/
+elif [ -e ${BACKUP_DIR}/Userfile ]; then
+  mesg "Installing Backup Userfile..."
+  cp ${BACKUP_DIR}/Userfile html/
 fi
 
 
